@@ -1,15 +1,20 @@
 language: minimal
 services: docker
 env:
-  - DOCKER_COMPOSE_VERSION=1.23.2
+  - DOCKER_COMPOSE_VERSION=1.28.2
+before_script:
+  - echo "no tests"
+
 before_install:
-  - docker -v && docker-compose -v
-  - sudo rm /usr/local/bin/docker-compose
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
   - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
   - chmod +x docker-compose
   - sudo mv docker-compose /usr/local/bin
-  - curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin # set Docker username and password in Travis console
-  - echo 'dockerhub credentials configured'
+  - docker -v
+  - curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
+  - chmod +x ./kubectl
+  - sudo mv ./kubectl /usr/local/bin/kubectl
+  - kubectl version --short --client
 install:
   - docker-compose -f docker-compose-build.yaml build --parallel
   - docker-compose -f docker-compose-build.yaml push
