@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+data:
+  AWS_MEDIA_BUCKET: bucket-68721317-dev  
+  AWS_PROFILE: default
+  AWS_REGION: us-east-2
+  JWT_SECRET: now889NPP909f4nnnedkp034
+  POSTGRES_DATABASE: postgres
+  POSTGRES_HOST: db-68721317-dev.chsx7mjzx792.us-east-2.rds.amazonaws.com
+  URL: http://a97a6c2482ec74695ae78c7e00bf68b2-1121056682.us-east-2.elb.amazonaws.com:8100
+metadata:
+  name: env-config

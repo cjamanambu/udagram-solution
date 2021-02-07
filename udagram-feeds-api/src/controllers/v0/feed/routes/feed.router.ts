@@ -1,6 +1,7 @@
 import {Router, Request, Response} from 'express';
 import {FeedItem} from '../models/FeedItem';
 import {NextFunction} from 'connect';
+const { v4: uuidv4 } = require('uuid');
 import * as jwt from 'jsonwebtoken';
 import * as AWS from '../../../../aws';
 import * as c from '../../../../config/config';
@@ -8,6 +9,8 @@ import * as c from '../../../../config/config';
 const router: Router = Router();
 
 export function requireAuth(req: Request, res: Response, next: NextFunction) {
+  let pid = uuidv4();
+  console.log(new Date().toLocaleString() + `: ${pid} - processing authentication in feed-servie`);
   if (!req.headers || !req.headers.authorization) {
     return res.status(401).send({message: 'No authorization headers.'});
   }
@@ -22,6 +25,7 @@ export function requireAuth(req: Request, res: Response, next: NextFunction) {
     if (err) {
       return res.status(500).send({auth: false, message: 'Failed to authenticate.'});
     }
+    console.log(new Date().toLocaleString() + `: ${pid} - authentication successful in feed-servie`);
     return next();
   });
 }
